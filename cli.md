@@ -12,11 +12,6 @@
 - [How to Use The Command Line, A Second Lesson (linfo.org)](https://www.linfo.org/command_line_lesson_2.html)
 
 
-- [ (linfo.org)]()
-
-- [ (linfo.org)]()
-
-
 
 ## Commands
 
