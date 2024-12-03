@@ -23,6 +23,7 @@ jobs:
       # Step 3: Generate a fortune and save it to a file
       - name: Generate fortune and save
         run: |
+          mkdir -p data/fortunes
           fortune | cowsay > `date +"data/fortunes/%Y%m%d_%H%M%S.txt"`  
 
       # Step 4: Commit and push the changes
