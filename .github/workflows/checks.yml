@@ -6,18 +6,10 @@ jobs:
     check:
         runs-on: ubuntu-latest
         steps:
-            - name: Output Date
-              run: date
-            - name: Test wget
-              run: wget --version
-            - name: Test curl
-              run: curl --version
-            - name: Output path
-              run: echo "$PATH"
             - name: Update APT
               run: sudo apt-get update
-            - name: Install fortune
-              run: sudo apt-get install fortune
+            - name: Install fortune and cowsay
+              run: sudo apt-get install fortune cowsay
             - name: Test fortune
-              run: /usr/games/fortune
+              run: /usr/games/fortune | /usr/games/cowsay
 
