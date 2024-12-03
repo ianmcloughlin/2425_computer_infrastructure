@@ -5,6 +5,9 @@ on:
     - cron: "0 0 * * *" # Runs every hour
   workflow_dispatch: # Allows manual triggering of the workflow
 
+permissions:
+  contents: write
+
 jobs:
   generate_fortune:
     runs-on: ubuntu-latest
