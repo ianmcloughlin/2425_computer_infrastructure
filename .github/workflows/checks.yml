@@ -1,15 +1,41 @@
-name: Check Software
+name: Generate and Save Fortune
 
-on: workflow_dispatch
+on:
+  schedule:
+    - cron: "0 0 * * *" # Runs every hour
+  workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
-    check:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Update APT
-              run: sudo apt-get update
-            - name: Install fortune and cowsay
-              run: sudo apt-get install fortune cowsay
-            - name: Test fortune
-              run: /usr/games/fortune | /usr/games/cowsay
+  generate_fortune:
+    runs-on: ubuntu-latest
 
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      # Step 2: Install cowsay and fortune
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cowsay fortune
+
+      # Step 3: Generate a fortune and save it to a file
+      - name: Generate fortune and save
+        run: |
+          mkdir -p data/fortunes
+          FORTUNE=$(fortune | cowsay)
+          TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+          echo "$FORTUNE" > data/fortunes/"$TIMESTAMP.txt"
+
+      # Step 4: Commit and push the changes
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/fortunes/"$TIMESTAMP.txt"
+          git commit -m "Add fortune for $TIMESTAMP"
+          git push
+        env:
+          # Ensure permissions for pushing changes
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
